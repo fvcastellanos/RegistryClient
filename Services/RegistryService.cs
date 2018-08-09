@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using RegistryClient.Domain;
 using RegistryClient.Client;
 using System.Linq;
+using System;
 
 namespace RegistryClient.Services
 {
@@ -26,6 +27,20 @@ namespace RegistryClient.Services
                 };
 
             return imageList;
+        }
+
+        public IEnumerable<ImageTags> getTags(string imagename)
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                // do something
+            }
+            var tags = _registryClient.getTags(imagename);
+            return null;
         }
 
     }

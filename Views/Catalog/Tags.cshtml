@@ -1,30 +1,33 @@
-@model RegistryClient.Models.Catalog.ImageListViewModel;
+@model RegistryClient.Models.Catalog.TagsViewModel;
 
 <section class="py-3">
     <div class="container">
-        <h1>Catalog</h1>
-        <p class="lead">Docker images catalog.</p>
+        <h1>Tags</h1>
+        <p class="lead">Tags.</p>
         <div class="row">
           <div class="col-sm-12 mx-auto">
             <div class="card card-signin my-3">
               <div class="card-body">
-                <!-- <h5 class="card-title text-center">Application configurations</h5> -->
+                <h5 class="card-title text-center">Image: @Model.ImageName</h5>
 
                 <table class="table table-striped table-bordered">
                     <thead class="thead-dark">
                         <tr>
-                            <th>Image Name</th>
+                            <th>#</th>
+                            <th>Tag Name</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach(var name in Model.Images)
+                        @foreach(var name in Model.Tags)
                         {
                             <tr>
-                                <td><a href="/Catalog/@name">@name</a></td>
+                                <td>#</td>
+                                <td>ddd</td>
                             </tr>
                         }
                     </tbody>
                 </table>
+
               </div>
             </div>
           </div>

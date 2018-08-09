@@ -12,20 +12,27 @@ namespace RegistryClient.Client
     {
         private readonly HttpClient _httpClient;
 
-        public DockerRegistryClient(string url, string userName, string password) {
+        public DockerRegistryClient(string url, string userName, string password)
+        {
             _httpClient = createClient(url, userName, password);
         }
 
-        public Catalog getCatalog() {
-            // var serializer = new DataContractJsonSerializer(typeof(Catalog));
+        public Catalog getCatalog()
+        {
             var stringTask = _httpClient.GetStringAsync("_catalog");
 
             var catalog = JsonConvert.DeserializeObject<Catalog>(stringTask.Result);
-            // var streamTask = _httpClient.GetStreamAsync("_catalog");
-
-            // var repositories = serializer.ReadObject(streamTask.Result) as Catalog;
 
             return catalog;
+        }
+
+        public ImageTags getTags(string imageName)
+        {
+            var stringTask = _httpClient.GetStringAsync(imageName + "/tags/list");
+
+            var tags = JsonConvert.DeserializeObject<ImageTags>(stringTask.Result);
+
+            return tags;
         }
     }
 }
