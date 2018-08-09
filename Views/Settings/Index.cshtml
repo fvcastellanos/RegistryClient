@@ -1,0 +1,37 @@
+@model RegistryClient.Models.Settings.SettingsViewModel;
+
+<section class="py-3">
+    <div class="container">
+        <h1>Settings</h1>
+        <p class="lead">Configure client.</p>
+        <div class="row">
+          <div class="col-sm-12 mx-auto">
+            <div class="card card-signin my-3">
+              <div class="card-body">
+                <!-- <h5 class="card-title text-center">Application configurations</h5> -->
+                <form>
+                  <div class="form-label-group">
+                      <label for="url">Registry URL</label>
+                      <input type="text" id="url" class="form-control" placeholder="Registry URL" value="@Model.URL" readonly>
+                  </div>
+
+                  <div class="form-label-group">
+                      <label for="user">User</label>
+                      <input type="text" id="user" class="form-control" placeholder="Username" value="@Model.UserName" readonly>
+                  </div>
+    
+                  <!-- <div class="form-label-group">
+                      <label for="inputPassword">Password</label>
+                      <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                  </div>
+
+                  <div style="margin-top: 1em">
+                      <button class="btn btn-primary btn-block" type="submit">Save</button>
+                  </div> -->
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</section>
