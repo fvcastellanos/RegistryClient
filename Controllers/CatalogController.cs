@@ -10,7 +10,7 @@ namespace RegistryClient.Controllers
     [Route("Catalog")]
     public class CatalogController : Controller
     {
-        private RegistryService _registryService;
+        private readonly RegistryService _registryService;
 
         public CatalogController(RegistryService registryService)
         {
@@ -19,16 +19,14 @@ namespace RegistryClient.Controllers
 
         public IActionResult Index()
         {
-            // var images = _registryService.getImages();
+            var result = _registryService.GetImages();
 
-            var images = new List<DockerImage>();
-
-            images.Add(new DockerImage() { Name = "cosa" });
-            images.Add(new DockerImage() { Name = "casa" });
-            images.Add(new DockerImage() { Name = "otra cosa" });
-            images.Add(new DockerImage() { Name = "otra casa" });
-
-            var names = from image in images
+            if (result.IsLeft())
+            {
+                // do something about the error
+            }
+            
+            var names = from image in result.Right
                 select image.Name;
 
             var model = new ImageListViewModel()
@@ -42,9 +40,19 @@ namespace RegistryClient.Controllers
         [Route("{imageName}")]
         public IActionResult Tags(string imageName)
         {
-            var model = new TagsViewModel(imageName);
-            model.Tags = new List<string>();
+            var result = _registryService.GetTags(imageName);
 
+            if (result.IsLeft())
+            {
+                // do something
+            }
+
+            var imageTags = result.Right;
+            var model = new TagsViewModel(imageTags.ImageName)
+            {
+                Tags = imageTags.TagList
+            };
+   
             return View("Tags", model);
         }
     }
