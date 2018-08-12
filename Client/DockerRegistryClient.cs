@@ -1,7 +1,4 @@
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Runtime.Serialization.Json;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using RegistryClient.Client.Model;
 using static RegistryClient.Client.HttpClientFactory;
@@ -17,7 +14,7 @@ namespace RegistryClient.Client
             _httpClient = createClient(url, userName, password);
         }
 
-        public Catalog getCatalog()
+        public Catalog GetCatalog()
         {
             var stringTask = _httpClient.GetStringAsync("_catalog");
 
@@ -26,7 +23,7 @@ namespace RegistryClient.Client
             return catalog;
         }
 
-        public ImageTags getTags(string imageName)
+        public ImageTags GetTags(string imageName)
         {
             var stringTask = _httpClient.GetStringAsync(imageName + "/tags/list");
 

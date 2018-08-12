@@ -18,7 +18,7 @@ namespace RegistryClient.Services
 
         public IEnumerable<DockerImage> getImages()
         {
-            var catalog = _registryClient.getCatalog();
+            var catalog = _registryClient.GetCatalog();
 
             var imageList = from imageName in catalog.Repositories
                 select new DockerImage()
@@ -39,7 +39,7 @@ namespace RegistryClient.Services
             {
                 // do something
             }
-            var tags = _registryClient.getTags(imagename);
+            var tags = _registryClient.GetTags(imagename);
             return null;
         }
 
