@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using RegistryClient.Domain;
-using RegistryClient.Client;
-using System.Linq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using RegistryClient.Client;
+using RegistryClient.Domain;
 
 namespace RegistryClient.Services
 {
@@ -16,7 +16,7 @@ namespace RegistryClient.Services
             _registryClient = new DockerRegistryClient(settings.URL, settings.UserName, settings.Password);
         }
 
-        public IEnumerable<DockerImage> getImages()
+        public IEnumerable<DockerImage> GetImages()
         {
             var catalog = _registryClient.GetCatalog();
 
@@ -29,7 +29,7 @@ namespace RegistryClient.Services
             return imageList;
         }
 
-        public IEnumerable<ImageTags> getTags(string imagename)
+        public IEnumerable<ImageTags> GetTags(string imagename)
         {
             try
             {
