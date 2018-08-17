@@ -6,17 +6,16 @@ namespace RegistryClient.Client
 {    
     public class HttpClientFactory
     {
-        public static HttpClient createClient(string baseUrl, string user, string password)
+        public static HttpClient CreateHttpClientBasicAuth(string baseUrl, string user, string password)
         {
-            var httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(baseUrl);
-            var token = buildBasicAuthToken(user, password);
+            var httpClient = new HttpClient { BaseAddress = new Uri(baseUrl) };
+            var token = BuildBasicAuthToken(user, password);
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", token);
 
             return httpClient;
         }
 
-        private static string buildBasicAuthToken(string user, string password)
+        private static string BuildBasicAuthToken(string user, string password)
         {
             var token = user + ":" + password;
             var tokenBytes = System.Text.Encoding.UTF8.GetBytes(token);

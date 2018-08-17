@@ -1,4 +1,5 @@
 using System.Net.Http;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using RegistryClient.Client.Model;
 using static RegistryClient.Client.HttpClientFactory;
@@ -9,9 +10,9 @@ namespace RegistryClient.Client
     {
         private readonly HttpClient _httpClient;
 
-        public DockerRegistryClient(string url, string userName, string password)
+        public DockerRegistryClient(HttpClient httpClient)
         {
-            _httpClient = createClient(url, userName, password);
+            _httpClient = httpClient;
         }
 
         public Catalog GetCatalog()
@@ -20,7 +21,12 @@ namespace RegistryClient.Client
 
             var catalog = JsonConvert.DeserializeObject<Catalog>(stringTask.Result);
 
-            return catalog;
+            if (stringTask.IsCompletedSuccessfully)
+            {
+                return catalog;
+            }
+
+            throw stringTask.Exception;
         }
 
         public ImageTags GetTags(string imageName)
@@ -30,6 +36,14 @@ namespace RegistryClient.Client
             var tags = JsonConvert.DeserializeObject<ImageTags>(stringTask.Result);
 
             return tags;
+        }
+
+        public bool DeleteImage(string imageName, string tagName)
+        {
+            var task = _httpClient.DeleteAsync(imageName + "/manifests/" + tagName);
+            var responseMessage = task.Result;
+
+            return responseMessage.IsSuccessStatusCode;
         }
     }
 }

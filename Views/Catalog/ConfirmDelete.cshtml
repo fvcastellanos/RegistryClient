@@ -1,0 +1,28 @@
+﻿@using RegistryClient.Controllers
+@model RegistryClient.Models.Catalog.ConfirmDeleteViewModel
+
+@{
+    ViewData["Title"] = "Confirm Delete";
+}
+<section class="py-3">
+    <div class="container">
+        <h1>Tags</h1>
+        <p class="lead">Do you really wan't to remove <span class="text-monospace">@Model.ImageName:@Model.TagName</span> from registry?</p>
+        <div class="row">
+          <div class="col-sm-12 mx-auto">
+            <div class="card card-signin my-3">
+                <div class="card-body">
+                    <form action="@Routes.DeleteTag" method="post">
+                        <input type="hidden" value="@Model.ImageName" id="imageName" name="imageName"/>
+                        <input type="hidden" value="@Model.TagName" id="tagName" name="tagName"/>
+                        <input type="submit" value="Delete" class="btn btn-danger"/>
+                        <a href="@Routes.Catalog/@Model.ImageName" class="btn btn-default">Cancel</a>
+                    </form>
+                    
+                    @await Html.PartialAsync("_ErrorSection", Model.ErrorMessage)
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</section>

@@ -1,14 +1,12 @@
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using RegistryClient.Domain;
 using RegistryClient.Models.Catalog;
 using RegistryClient.Services;
 
 namespace RegistryClient.Controllers
 {
     [Route("Catalog")]
-    public class CatalogController : Controller
+    public class CatalogController : BaseController
     {
         private readonly RegistryService _registryService;
 
@@ -23,7 +21,7 @@ namespace RegistryClient.Controllers
 
             if (result.IsLeft())
             {
-                // do something about the error
+                return RedirectError("Can't get image catalog");
             }
             
             var names = from image in result.Right
@@ -44,7 +42,7 @@ namespace RegistryClient.Controllers
 
             if (result.IsLeft())
             {
-                // do something
+                return RedirectError("Can't get tag list from image: " + imageName);
             }
 
             var imageTags = result.Right;
@@ -54,6 +52,49 @@ namespace RegistryClient.Controllers
             };
    
             return View("Tags", model);
+        }
+
+        [Route("DeleteTag/{imageName}/{tagName}")]
+        public IActionResult ConfirmDeletion(string imageName, string tagName)
+        {
+            var model = BuildViewModel(imageName, tagName);
+
+            return View("ConfirmDelete", model);
+        }
+        
+        [HttpPost]
+        [Route("DeleteTag")]
+        public IActionResult DeleteImage(DeleteTagRequestView requestView)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectError("Can't delete image tag");
+            }
+            
+            var result = _registryService.DeleteImage(requestView.ImageName, requestView.TagName);
+
+            if (result.IsLeft())
+            {
+                var model = BuildViewModel(requestView.ImageName, requestView.TagName, result.Left);
+                return View("ConfirmDelete", model);
+            }
+
+            return Redirect(Routes.Catalog + "/" + requestView.ImageName);
+        }
+
+        private ConfirmDeleteViewModel BuildViewModel(string imageName, string tagName)
+        {
+            return BuildViewModel(imageName, tagName, string.Empty);
+        }
+        
+        private ConfirmDeleteViewModel BuildViewModel(string imageName, string tagName, string errorMessage)
+        {
+            return new ConfirmDeleteViewModel()
+            {
+                ImageName = imageName,
+                TagName = tagName,
+                ErrorMessage = errorMessage
+            };
         }
     }
 }

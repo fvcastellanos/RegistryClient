@@ -13,10 +13,9 @@ namespace RegistryClient.Services
         private readonly DockerRegistryClient _registryClient;
 
         public RegistryService(ILogger<RegistryService> logger,
-            SettingsService settingsService)
+            DockerRegistryClient dockerRegistryClient)
         {
-            var settings = settingsService.GetRegistrySettings();
-            _registryClient = new DockerRegistryClient(settings.URL, settings.UserName, settings.Password);
+            _registryClient = dockerRegistryClient;
             _logger = logger;
         }
 
@@ -58,8 +57,24 @@ namespace RegistryClient.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError("can't get tags for image: %s : ", imageName, ex);
+                _logger.LogError("can't get tags for image: {0} - : ", imageName, ex);
                 return Result<string, ImageTags>.ForLeft("can't get tags for image: " + imageName);
+            }
+        }
+
+        public Result<string, string> DeleteImage(string imageName, string tagName)
+        {
+            try
+            {
+                var result = _registryClient.DeleteImage(imageName, tagName);
+
+                return !result ? Result<string, string>.ForLeft("image: " + imageName + " tag: " + tagName + " was not deleted") 
+                    : Result<string, string>.ForRight(imageName + ":" + tagName);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("can't delete image: {0} tag: {1}", imageName, tagName);
+                return Result<string, string>.ForLeft("can't delete image: " + imageName + " tag: " + tagName);
             }
         }
 

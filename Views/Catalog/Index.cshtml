@@ -1,3 +1,6 @@
+@using RegistryClient.Controllers
+@using static RegistryClient.Controllers.Routes
+
 @model RegistryClient.Models.Catalog.ImageListViewModel
 @{
     ViewData["Title"] = "Catalog";
@@ -22,7 +25,7 @@
                         @foreach(var name in Model.Images)
                         {
                             <tr>
-                                <td><a href="/Catalog/@name">@name</a></td>
+                                <td><a href="@Routes.Catalog/@name">@name</a></td>
                             </tr>
                         }
                     </tbody>
