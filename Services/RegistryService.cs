@@ -35,7 +35,7 @@ namespace RegistryClient.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError("can't get images: ", ex);
+                _logger.LogError("can't get images: {0}", ex);
                 return Result<string, IEnumerable<DockerImage>>.ForLeft("can't get images list");
             }
         }
@@ -57,7 +57,7 @@ namespace RegistryClient.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError("can't get tags for image: {0} - : ", imageName, ex);
+                _logger.LogError("can't get tags for image: {0} - : {1}", imageName, ex);
                 return Result<string, ImageTags>.ForLeft("can't get tags for image: " + imageName);
             }
         }
@@ -73,7 +73,7 @@ namespace RegistryClient.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError("can't delete image: {0} tag: {1}", imageName, tagName);
+                _logger.LogError("can't delete image: {0} tag: {1} - {3}", imageName, tagName, ex);
                 return Result<string, string>.ForLeft("can't delete image: " + imageName + " tag: " + tagName);
             }
         }
